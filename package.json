@@ -1,0 +1,19 @@
+{
+  "name": "private-box2",
+  "description": "new private message format for ssb",
+  "version": "1.0.0",
+  "homepage": "https://github.com/ssbc/private-box2",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ssbc/private-box2.git"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "author": "Dominic Tarr @EMovhfIrFk4NihAKnRNhrfRaqIhBv1Wj8pTxJNgvCCY=.ed25519",
+  "license": "MIT"  
+}
