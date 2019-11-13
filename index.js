@@ -9,6 +9,7 @@ but implementing this made me realize not everything was specified.
 * what is the nonce for the header?
 * what endian are we using? (I recommend little endian)
 * probably some other stuff that I don't know yet because I havn't even done the ephemeral stuff yet
+* the spec document seems to use JSON inside of the derive key function but that can't be serious, can it?
 
 */
 
