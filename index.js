@@ -1,5 +1,17 @@
 var na = require('sodium-native')
 
+/*
+format based on https://cryptpad.fr/code/#/2/code/edit/hXOe+smHiSRKcK+zwTBqcXPo/
+but implementing this made me realize not everything was specified.
+
+* is there is external_nonce? (I want to use the previous message)
+* do we really need to derive the body_key, then another box key from that?
+* what is the nonce for the header?
+* what endian are we using? (I recommend little endian)
+* probably some other stuff that I don't know yet because I havn't even done the ephemeral stuff yet
+
+*/
+
 function derive_secret (secret, label, length) {
   return hkdf(secret, label, length || 256)
 }
