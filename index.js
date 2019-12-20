@@ -38,7 +38,9 @@ header_box[32](mac_tag[16], header[16](offset[2],flags[1],hdr_ext[13])
 
 exports.box = function (ptxt, external_nonce, msg_key, recipient_keys, ephemerals, padding) {
 
-  if(ephemerals) throw new Error('ephemerals not yet implemented')
+  if(!Array.isArray(ephemerals)) throw new Error('ephemerals must be an array')
+
+  if(ephemerals.length) throw new Error('ephemerals not yet implemented, must be empty array')
 
   var msg_read_cap  = derive(msg_key, 'read_cap')
   var hdr_key     = derive(msg_read_cap, 'header')
@@ -54,14 +56,15 @@ exports.box = function (ptxt, external_nonce, msg_key, recipient_keys, ephemeral
   var length = (header_length + ptxt.length)
 
   var buffer = Buffer.alloc(length)
-  var header_box = buffer.slice(0,32)
+  var header_box = buffer.slice(0, 32)
 
-  var _header = Buffer.alloc(16)
+  var _header = header_box.slice(16)//Buffer.alloc(16)
+  //header_length tells you where the body starts, it is encrypted into header_box.
   _header.writeUInt32LE(0, header_length)
 
   na.crypto_box_easy(header_box, _header, hdr_key, nonce??) //XXX nonce??
 
-  recipients_keys.forEach(function (key, i) {
+  recipient_keys.forEach(function (key, i) {
     //xor msg_key with recipient[i] and store result in bytes 32...32+32*recipients.length
     //note, if you only know read_cap you don't know msg_key so can't derive msg_key
     na.crypto_xor(buffer.slice(32 + 32*i, 64 + 32*i), key, msg_key)
@@ -80,11 +83,11 @@ exports.box = function (ptxt, external_nonce, msg_key, recipient_keys, ephemeral
   return buffer
 }
 
-exports.unboxKey = function (ctxt, external_nonce, trail_keys, attempts) {
+exports.unboxKey = function (ctxt, external_nonce, trail_keys, max_attempts) {
   var header_box = ctxt.slice(0, 32)
   var _msg_key = Buffer.alloc(32), header_ptxt = Buffer.alloc(16)
   for(var i = 0; i < trail_keys.length; i++) {
-    for(var j = 0; j < attempts; j++) {
+    for(var j = 0; j < max_attempts; j++) {
       var trial = trail_keys[i]
       na.xor(_msg_key, trail, ctxt.slice(32+j*32))
       var read_cap = derive(_msg_key, 'read_cap')
