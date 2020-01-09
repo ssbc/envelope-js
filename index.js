@@ -1,37 +1,10 @@
 var na = require('sodium-native')
 
-/*
-format based on https://cryptpad.fr/code/#/2/code/edit/hXOe+smHiSRKcK+zwTBqcXPo/
-but implementing this made me realize not everything was specified.
-
-* is there is external_nonce? (I want to use the previous message)
-* do we really need to derive the body_key, then another box key from that?
-* what is the nonce for the header?
-* what endian are we using? (I recommend little endian)
-* probably some other stuff that I don't know yet because I havn't even done the ephemeral stuff yet
-* the spec document seems to use JSON inside of the derive key function but that can't be serious, can it?
-
-*/
+// see box2 spec : https://github.com/ssbc/box2-spec
 
 function derive_secret (secret, label, length) {
   return hkdf(secret, label, length || 256)
 }
-
-/*
-msg_key
-
-msg_read_cap  = derive(msg_key, 'read_cap')
-  hdr_key     = derive(msg_read_cap, 'header')
-  body_key    = derive(msg_read_cap, 'body')
-    box       = derive(body_key, 'box')
-    box_nonce = derive(body_key, 'box_nonce', 192)
-
-ext           = derive(msg_key, 'ext')
-  eph         = derive(ext, 'eph')
-    n_eph_pad = derive(eph, 'n_eph_pad', 8)
-    ext_box   = derive(eph, 'box')
-    ext_nonce = derive(eph, 'box_nonce', 192)
-
 
 header_box[32](mac_tag[16], header[16](offset[2],flags[1],hdr_ext[13])
 */
