@@ -36,15 +36,16 @@ ext           = derive(msg_key, 'ext')
 header_box[32](mac_tag[16], header[16](offset[2],flags[1],hdr_ext[13])
 */
 
-exports.box = function (ptxt, external_nonce, msg_key, recipient_keys, ephemerals, padding) {
-
+exports.box = function (ptxt, external_nonce, msg_key, recipient_keys, ephemerals = [], padding) {
   if(!Array.isArray(ephemerals)) throw new Error('ephemerals must be an array')
-
   if(ephemerals.length) throw new Error('ephemerals not yet implemented, must be empty array')
 
   var msg_read_cap  = derive(msg_key, 'read_cap')
-  var hdr_key     = derive(msg_read_cap, 'header')
-
+    var hdr_key     = derive(msg_read_cap, 'header')
+    var body_key    = derive(msg_read_cap, 'body')
+      var box       = derive(body_key, 'box')
+      var box_nonce = derive(body_key, 'box_nonce', 192)
+      // mix: I'd be keen to rename some of these cos there are multiple "box"s here
 
   var header_length = (
     32
@@ -52,33 +53,31 @@ exports.box = function (ptxt, external_nonce, msg_key, recipient_keys, ephemeral
   + (ephemerals.length ? 32 * (ephemerals.length + 1) : 0)
   + padding ? padding.length : 0
   )
+  // mix: in the diagram header is only the first 32 bytes
+  // this is much more so should change diagram or change name
 
-  var length = (header_length + ptxt.length)
-
-  var buffer = Buffer.alloc(length)
+  var buffer = Buffer.alloc(header_length + ptxt.length)
   var header_box = buffer.slice(0, 32)
 
   var _header = header_box.slice(16)//Buffer.alloc(16)
   //header_length tells you where the body starts, it is encrypted into header_box.
   _header.writeUInt32LE(0, header_length)
 
-  na.crypto_box_easy(header_box, _header, hdr_key, nonce??) //XXX nonce??
+  na.crypto_secretbox_easy(header_box, _header, nonce??, hdr_key) //XXX nonce??
 
   recipient_keys.forEach(function (key, i) {
     //xor msg_key with recipient[i] and store result in bytes 32...32+32*recipients.length
     //note, if you only know read_cap you don't know msg_key so can't derive msg_key
     na.crypto_xor(buffer.slice(32 + 32*i, 64 + 32*i), key, msg_key)
+  }
+
   //extentions. not supported yet.
+  
   if(padding)
     padding.copy(buffer, header_length-padding.length)
 
   var body = buffer.slice(header_length)
-
-  var body_key    = derive(msg_read_cap, 'body')
-    var box       = derive(body_key, 'box')
-    var box_nonce = derive(body_key, 'box_nonce', 192)
-
-  na.crypto_box_easy(body, message, box, box_nonce)
+  na.crypto_secretbox_easy(body, message, box_nonce, box)
 
   return buffer
 }
@@ -91,7 +90,7 @@ exports.unboxKey = function (ctxt, external_nonce, trail_keys, max_attempts) {
       var trial = trail_keys[i]
       na.xor(_msg_key, trail, ctxt.slice(32+j*32))
       var read_cap = derive(_msg_key, 'read_cap')
-      var header = derive(_msg_key, 'header')
+      var header = derive(read_cap, 'header')
       if(na.crypto_unbox_easy(header_ptxt, header_box, header, nonce??)) //XXX nonce??
         return read_cap
     }
