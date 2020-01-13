@@ -6,18 +6,15 @@ function derive_secret (secret, label, length) {
   return hkdf(secret, label, length || 256)
 }
 
-header_box[32](mac_tag[16], header[16](offset[2],flags[1],hdr_ext[13])
-*/
+// header_box[32](mac_tag[16], header[16](offset[2],flags[1],hdr_ext[13])
 
 exports.box = function (ptxt, external_nonce, msg_key, recipient_keys, ephemerals, padding) {
-
   if(!Array.isArray(ephemerals)) throw new Error('ephemerals must be an array')
 
   if(ephemerals.length) throw new Error('ephemerals not yet implemented, must be empty array')
 
   var msg_read_cap  = derive(msg_key, 'read_cap')
   var hdr_key     = derive(msg_read_cap, 'header')
-
 
   var header_length = (
     32
@@ -35,7 +32,7 @@ exports.box = function (ptxt, external_nonce, msg_key, recipient_keys, ephemeral
   //header_length tells you where the body starts, it is encrypted into header_box.
   _header.writeUInt32LE(0, header_length)
 
-  na.crypto_box_easy(header_box, _header, hdr_key, nonce??) //XXX nonce??
+  na.crypto_box_easy(header_box, _header, nonce??, hdr_key) //XXX nonce??
 
   recipient_keys.forEach(function (key, i) {
     //xor msg_key with recipient[i] and store result in bytes 32...32+32*recipients.length
