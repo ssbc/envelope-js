@@ -1,6 +1,6 @@
 const na = require('sodium-native')
 const derive = require('../../box2/derive-secret')
-const box = require('../../box2/box') 
+const box = require('../../box2/box')
 const encodeLeaves = require('./encode-leaves')
 
 const KEY_LENGTH = na.crypto_secretbox_KEYBYTES
@@ -47,9 +47,9 @@ const A = () => {
   const msg_key = makeKey()
   const external_nonce = makeNonce()
 
-  const boxed = box(plain_text, msg_key, external_nonce, recp_keys)
+  const boxed = box(plain_text, external_nonce, msg_key, recp_keys)
 
-  const  boxVector = {
+  const boxVector = {
     type: 'box',
     description: 'box for 2 recipients',
     input: {
@@ -59,11 +59,24 @@ const A = () => {
       recp_keys
     },
     output: {
-      cyphertext: boxed
+      ciphertext: boxed
     }
   }
-
   print('box2-spec/test/box1.json', boxVector)
+
+  const unboxVector = {
+    type: 'unbox',
+    description: 'unbox successfully',
+    input: {
+      ciphertext: boxed,
+      external_nonce,
+      recipient_key: recp_keys[1]
+    },
+    output: {
+      plain_text
+    }
+  }
+  print('box2-spec/test/unbox1.json', unboxVector)
 }
 A()
 

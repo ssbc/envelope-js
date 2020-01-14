@@ -1,6 +1,7 @@
 const na = require('sodium-native')
 const xor = require('buffer-xor/inplace')
 const derive = require('./derive-secret')
+const keySlotFlip = require('./key-slot-flip')
 
 module.exports = function box (plain_text, external_nonce, msg_key, recp_keys, opts = {}) {
   const read_key = derive(msg_key, 'key_type:read_key')
@@ -19,27 +20,24 @@ module.exports = function box (plain_text, external_nonce, msg_key, recp_keys, o
 
   /* header_box */
   const header_box = cyphertext.slice(0, 32)
-    const _header = header_box.slice(16)
-    _header.writeUInt16LE(offset, 0)
+    const header = header_box.slice(16)
+    header.writeUInt16LE(offset, 0)
     /*
-    _header.write...(flags, 2)
-    _header.write...(header_extensions, 3)
+    header.write...(flags, 2)
+    header.write...(header_extensions, 3)
     */
 
-  na.crypto_secretbox_easy(header_box, _header, external_nonce, header_key)
+  na.crypto_secretbox_easy(header_box, header, external_nonce, header_key)
 
 
   /* key_slots */
+
   recp_keys.forEach((recp_key, i) => {
-    const _key_slot_i = cyphertext.slice(32 + 32*i, 64 + 32*i)
+    const _key_slot = cyphertext.slice(32 + 32*i, 64 + 32*i)
 
-    msg_key.copy(_key_slot_i)
-    xor(
-      _key_slot_i,
-      derive(recp_key, 'key_slot;prev=' + external_nonce, 32)
-    )
+    msg_key.copy(_key_slot)
+    xor(_key_slot, keySlotFlip(external_nonce, recp_key))
   })
-
 
   /* extentions */
   // TODO

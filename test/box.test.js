@@ -10,7 +10,7 @@ test('box', t => {
   const { plain_text, external_nonce, msg_key, recp_keys  } = vector1.input
   const result = box(plain_text, external_nonce, msg_key, recp_keys)
 
-  t.deepEqual(result, vector1.output.cyphertext, 'correctly box for 2 recps')
+  t.deepEqual(result, vector1.output.ciphertext, 'correctly box for 2 recps')
 
   t.end()
 })
