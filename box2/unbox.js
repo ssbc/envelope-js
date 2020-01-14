@@ -5,7 +5,7 @@ const keySlotFlip = require('./key-slot-flip')
 
 module.exports = function unbox (ciphertext, external_nonce, trial_keys, maxAttempts = 8) {
   const read_key = unboxKey(ciphertext, external_nonce, trial_keys, maxAttempts)
-  if (!read_key) return false
+  if (!read_key) return null
 
   return unboxBody(ciphertext, external_nonce, read_key)
 }

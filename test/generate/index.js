@@ -77,6 +77,20 @@ const A = () => {
     }
   }
   print('box2-spec/test/unbox1.json', unboxVector)
+
+  const unboxableVector = {
+    type: 'unbox',
+    description: 'unbox fails with incorrect key, return false',
+    input: {
+      ciphertext: boxed,
+      external_nonce,
+      recipient_key: makeKey() // the wrong key
+    },
+    output: {
+      plain_text: null
+    }
+  }
+  print('box2-spec/test/unbox2.json', unboxableVector)
 }
 A()
 

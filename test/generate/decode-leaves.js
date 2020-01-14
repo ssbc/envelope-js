@@ -17,5 +17,7 @@ module.exports = function decodeLeaves (vector) {
 }
 
 function decode (value) {
+  if (!value) return value
+
   return Buffer.from(value, 'base64')
 }
