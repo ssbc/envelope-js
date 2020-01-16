@@ -1,3 +1,4 @@
+const { Buffer } = require('buffer')
 const na = require('sodium-native')
 const xor = require('buffer-xor/inplace')
 const { derive_secret_labels: labels } = require('box2-spec/constants.json')
@@ -5,7 +6,8 @@ const { derive_secret_labels: labels } = require('box2-spec/constants.json')
 const derive = require('./util/derive-secret')
 const keySlotFlip = require('./util/key-slot-flip')
 
-module.exports = function box (plain_text, external_nonce, msg_key, recp_keys, opts = {}) {
+// module.exports = function box (plain_text, external_nonce, msg_key, recp_keys, opts = {}) {
+module.exports = function box (plain_text, external_nonce, msg_key, recp_keys) {
   const read_key = derive(msg_key, labels.read_key)
     const header_key = derive(read_key, labels.header_key)
     const body_key   = derive(read_key, labels.body_key)
@@ -15,6 +17,7 @@ module.exports = function box (plain_text, external_nonce, msg_key, recp_keys, o
     recp_keys.length * 32   // key_slots
     // ??                   // TODO - extensions section
   )
+
   const cyphertext = Buffer.alloc(
     offset +                // length of bytes before body_box
     plain_text.length + 16  // body_box = body + HMAC
@@ -38,7 +41,7 @@ module.exports = function box (plain_text, external_nonce, msg_key, recp_keys, o
     const _key_slot = cyphertext.slice(32 + 32*i, 64 + 32*i)
 
     msg_key.copy(_key_slot)
-    xor(_key_slot, keySlotFlip(external_nonce, recp_key))
+    xor(_key_slot, keySlotFlip(recp_key, external_nonce))
   })
 
   /* extentions */

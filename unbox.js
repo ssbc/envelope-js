@@ -1,3 +1,4 @@
+const { Buffer } = require('buffer')
 const na = require('sodium-native')
 const xor = require('buffer-xor/inplace')
 const derive = require('./util/derive-secret')
@@ -22,9 +23,9 @@ function unboxKey (ciphertext, external_nonce, trial_keys, maxAttempts) {
   )
   const msg_key = Buffer.alloc(32)
 
-  for (var i = 0; i < trial_keys.length; i++) {
-    const flip = keySlotFlip(external_nonce, trial_keys[i])
-    for (var j = 0; j < _maxAttempts; j++) {
+  for (let i = 0; i < trial_keys.length; i++) {
+    const flip = keySlotFlip(trial_keys[i], external_nonce)
+    for (let j = 0; j < _maxAttempts; j++) {
       flip.copy(msg_key)
       xor(
         msg_key, // currently "flip", about to be over-written with result of xor
@@ -56,4 +57,3 @@ function unboxBody (ciphertext, external_nonce, read_key) {
 
   return body
 }
-

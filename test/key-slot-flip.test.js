@@ -10,10 +10,6 @@ test('key-slot-flip', t => {
 
   const { external_nonce, recipient_key } = vector.input
 
-  console.log(vector)
-  console.log(external_nonce)
-  console.log(recipient_key)
-
   t.deepEqual(
     keySlotFlip(recipient_key, external_nonce),
     vector.output.key_slot_flip,
