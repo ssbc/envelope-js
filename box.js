@@ -1,12 +1,14 @@
 const na = require('sodium-native')
 const xor = require('buffer-xor/inplace')
-const derive = require('./derive-secret')
-const keySlotFlip = require('./key-slot-flip')
+const { derive_secret_labels: labels } = require('box2-spec/constants.json')
+
+const derive = require('./util/derive-secret')
+const keySlotFlip = require('./util/key-slot-flip')
 
 module.exports = function box (plain_text, external_nonce, msg_key, recp_keys, opts = {}) {
-  const read_key = derive(msg_key, 'key_type:read_key')
-    const header_key = derive(read_key, 'key_type:header_key')
-    const body_key   = derive(read_key, 'key_type:body_key')
+  const read_key = derive(msg_key, labels.read_key)
+    const header_key = derive(read_key, labels.header_key)
+    const body_key   = derive(read_key, labels.body_key)
 
   const offset = (
     32 +                    // header_box

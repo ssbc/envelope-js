@@ -1,16 +1,17 @@
 const test = require('tape')
-const vector = require('box2-spec/test/derive-secret.json')
+const vector = require('box2-spec/vectors/derive-secret.json')
+const { derive_secret_labels: labels } = require('box2-spec/constants.json')
 
-const decodeLeaves = require('./generate/decode-leaves')
-const derive = require('../box2/derive-secret')
+const decodeLeaves = require('./helpers/decode-leaves')
+const derive = require('../util/derive-secret')
 
 test('derive-secret', t => {
   decodeLeaves(vector)
 
   const msg_key = vector.input.msg_key
-    const read_key = derive(msg_key, 'key_type:read_key')
-      const header_key = derive(read_key, 'key_type:header_key')
-      const body_key   = derive(read_key, 'key_type:body_key')
+    const read_key = derive(msg_key, labels.read_key)
+      const header_key = derive(read_key, labels.header_key)
+      const body_key   = derive(read_key, labels.body_key)
 
   t.deepEqual(read_key, vector.output.read_key, 'derive read_key')
   t.deepEqual(header_key, vector.output.header_key, 'derive header_key')
@@ -18,3 +19,15 @@ test('derive-secret', t => {
 
   t.end()
 })
+
+
+// put the 'key_type:read_key' into consts in box2_spec
+// put the errorMessages in a folder too
+
+// constants.json
+//  - derive-secret-labels
+//    - description
+//    - read_key
+//    - header_key
+
+

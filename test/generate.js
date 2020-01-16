@@ -1,7 +1,9 @@
 const na = require('sodium-native')
-const derive = require('../../box2/derive-secret')
-const box = require('../../box2/box')
-const encodeLeaves = require('./encode-leaves')
+const { derive_secret_labels: labels } = require('box2-spec/constants.json')
+const { box } = require('../')
+const derive = require('../util/derive-secret')
+const keySlotFlip = require('../util/key-slot-flip')
+const encodeLeaves = require('./helpers/encode-leaves')
 
 const KEY_LENGTH = na.crypto_secretbox_KEYBYTES
 function makeKey () {
@@ -17,11 +19,10 @@ function makeNonce () {
 }
 
 /* derive-secret test vector */
-
 const msg_key = makeKey()
-  const read_key = derive(msg_key, 'key_type:read_key', KEY_LENGTH)
-    const header_key = derive(read_key, 'key_type:header_key', KEY_LENGTH)
-    const body_key   = derive(read_key, 'key_type:body_key', KEY_LENGTH)
+  const read_key = derive(msg_key, labels.read_key)
+    const header_key = derive(read_key, labels.header_key)
+    const body_key   = derive(read_key, labels.body_key)
 
 const deriveVector = {
   type: 'derive_secret',
@@ -36,11 +37,31 @@ const deriveVector = {
   }
 }
 
-print('box2-spec/test/derive-secret.json', deriveVector)
+print('box2-spec/vectors/derive-secret.json', deriveVector)
+
+/* key-slot-flip test vector */
+const F = () => {
+  const external_nonce = makeNonce()
+  const recipient_key = makeKey()
+
+  const flipVector = {
+    type: 'key_slot_flip',
+    description: 'in each key-slot, we xor the msg_key with a unique value - the key-slot-flip. this vector tests you made it correctly!',
+    input: {
+      external_nonce,
+      recipient_key
+    },
+    output: {
+      key_slot_flip: keySlotFlip(recipient_key, external_nonce)
+    }
+  }
+
+  print('box2-spec/vectors/key-slot-flip.json', flipVector)
+}
+F()
 
 
-/* box test vectors */
-
+/* box + unbox test vectors */
 const A = () => {
   const plain_text = Buffer.from('squeamish ossifrage 😨', 'utf8')
   const recp_keys = [ makeKey(), makeKey() ]
@@ -62,7 +83,7 @@ const A = () => {
       ciphertext: boxed
     }
   }
-  print('box2-spec/test/box1.json', boxVector)
+  print('box2-spec/vectors/box1.json', boxVector)
 
   const unboxVector = {
     type: 'unbox',
@@ -76,7 +97,7 @@ const A = () => {
       plain_text
     }
   }
-  print('box2-spec/test/unbox1.json', unboxVector)
+  print('box2-spec/vectors/unbox1.json', unboxVector)
 
   const unboxableVector = {
     type: 'unbox',
@@ -90,7 +111,7 @@ const A = () => {
       plain_text: null
     }
   }
-  print('box2-spec/test/unbox2.json', unboxableVector)
+  print('box2-spec/vectors/unbox2.json', unboxableVector)
 }
 A()
 

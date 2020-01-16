@@ -1,9 +1,11 @@
 const test = require('tape')
-const vector1 = require('box2-spec/test/unbox1.json')
-const vector2 = require('box2-spec/test/unbox2.json')
+const vector1 = require('box2-spec/vectors/unbox1.json')
+const vector2 = require('box2-spec/vectors/unbox2.json')
 
-const decodeLeaves = require('./generate/decode-leaves')
-const unbox = require('../box2/unbox')
+// NOTE - decodeLeaves bulk-converts string-encoded buffers
+// back into Buffers so the vector can be used directly
+const decodeLeaves = require('./helpers/decode-leaves')
+const { unbox } = require('../')
 
 test('unbox', t => {
   decodeLeaves(vector1)
