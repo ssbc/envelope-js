@@ -19,15 +19,3 @@ test('derive-secret', t => {
 
   t.end()
 })
-
-
-// put the 'key_type:read_key' into consts in box2_spec
-// put the errorMessages in a folder too
-
-// constants.json
-//  - derive-secret-labels
-//    - description
-//    - read_key
-//    - header_key
-
-

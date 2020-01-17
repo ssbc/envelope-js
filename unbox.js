@@ -1,16 +1,19 @@
 const { Buffer } = require('buffer')
 const na = require('sodium-native')
 const xor = require('buffer-xor/inplace')
-const derive = require('./util/derive-secret')
-const keySlotFlip = require('./util/key-slot-flip')
 const { derive_secret_labels: labels } = require('box2-spec/constants.json')
 
+const { derive, keySlotFlip, error } = require('./util')
+
 module.exports = function unbox (ciphertext, external_nonce, trial_keys, maxAttempts = 8) {
+  if (!Buffer.isBuffer(external_nonce) || !external_nonce.length) throw error('unboxEmptyExternalNonce')
+
   const read_key = unboxKey(ciphertext, external_nonce, trial_keys, maxAttempts)
   if (!read_key) return null
 
   return unboxBody(ciphertext, external_nonce, read_key)
 }
+
 
 function unboxKey (ciphertext, external_nonce, trial_keys, maxAttempts) {
   const header_box = ciphertext.slice(0, 32)

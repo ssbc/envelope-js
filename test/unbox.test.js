@@ -1,23 +1,39 @@
 const test = require('tape')
-const vector1 = require('box2-spec/vectors/unbox1.json')
-const vector2 = require('box2-spec/vectors/unbox2.json')
-
 // NOTE - decodeLeaves bulk-converts string-encoded buffers
 // back into Buffers so the vector can be used directly
 const decodeLeaves = require('./helpers/decode-leaves')
 const { unbox } = require('../')
 
+const vectors = [
+  require('box2-spec/vectors/unbox1.json'),
+  require('box2-spec/vectors/unbox2.json')
+]
+
 test('unbox', t => {
-  decodeLeaves(vector1)
-  decodeLeaves(vector2)
+  t.plan(vectors.length)
 
-  var { ciphertext, external_nonce, recipient_key } = vector1.input
-  var result = unbox(ciphertext, external_nonce, [recipient_key])
-  t.deepEqual(result, vector1.output.plain_text, 'unbox successfully')
+  vectors.forEach(vector => {
+    decodeLeaves(vector)
+    var { ciphertext, external_nonce, recipient_key } = vector.input
 
-  var { ciphertext, external_nonce, recipient_key } = vector2.input
-  var result = unbox(ciphertext, external_nonce, [recipient_key])
-  t.deepEqual(result, vector2.output.plain_text, 'unbox fails (without correct key)')
+    if (!vector.error_code) {
 
-  t.end()
+      t.deepEqual(
+        unbox(ciphertext, external_nonce, [recipient_key]),
+        vector.output.plain_text,
+        vector.description
+      )   
+    }
+    else {
+      try {
+        unbox(ciphertext, external_nonce, [recipient_key])
+      } catch (e) {
+        t.equal(
+          e.code,
+          vector.error_code,
+          vector.description
+        )
+      }
+    }
+  })
 })

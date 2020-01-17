@@ -8,7 +8,7 @@
     "url": "git://github.com/ssbc/private-box2.git"
   },
   "scripts": {
-    "generate": "node test/generate.js",
+    "generate": "node test/generate/index.js",
     "test": "npm run test:js && npm run lint",
     "test:js": "tape 'test/**/*.test.js' | tap-spec",
     "lint": "eslint ."

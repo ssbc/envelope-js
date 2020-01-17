@@ -1,5 +1,11 @@
 const test = require('tape')
-const vector1 = require('box2-spec/vectors/box1.json')
+const vectors = [
+  require('box2-spec/vectors/box1.json'),
+  require('box2-spec/vectors/box2.json'),
+  require('box2-spec/vectors/box3.json'),
+  require('box2-spec/vectors/box4.json'),
+  require('box2-spec/vectors/box5.json')
+]
 
 // NOTE - decodeLeaves bulk-converts string-encoded buffers
 // back into Buffers so the vector can be used directly
@@ -7,20 +13,29 @@ const decodeLeaves = require('./helpers/decode-leaves')
 const { box } = require('../')
 
 test('box', t => {
-  decodeLeaves(vector1)
+  t.plan(vectors.length)
 
-  const { plain_text, external_nonce, msg_key, recp_keys } = vector1.input
-  const result = box(plain_text, external_nonce, msg_key, recp_keys)
+  vectors.forEach(vector => {
+    decodeLeaves(vector)
+    const { plain_text, external_nonce, msg_key, recp_keys } = vector.input
 
-  t.deepEqual(result, vector1.output.ciphertext, 'correctly box for 2 recps')
-
-  t.end()
+    if (!vector.error_code) {
+      t.deepEqual(
+        box(plain_text, external_nonce, msg_key, recp_keys),
+        vector.output.ciphertext,
+        vector.description
+      )
+    }
+    else {
+      try {
+        box(plain_text, external_nonce, msg_key, recp_keys)
+      } catch (e) {
+        t.equal(
+          e.code,
+          vector.error_code,
+          vector.description
+        )
+      }
+    }
+  })
 })
-
-// want vectors for edge cases:
-// - plain_text is empty: ''
-// - external_nonce - null not allowed
-// - no recpient_keys >  vector1.error = 'noRecipientsError'
-//   - vector1.error = null when no errors
-//
-// - any variables missing results in error

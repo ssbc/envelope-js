@@ -3,11 +3,16 @@ const na = require('sodium-native')
 const xor = require('buffer-xor/inplace')
 const { derive_secret_labels: labels } = require('box2-spec/constants.json')
 
-const derive = require('./util/derive-secret')
-const keySlotFlip = require('./util/key-slot-flip')
+const { derive, keySlotFlip, error } = require('./util')
+const zerodNonce = Buffer.alloc(na.crypto_secretbox_NONCEBYTES)
+const zerodMsgKey = Buffer.alloc(na.crypto_secretbox_KEYBYTES)
 
-// module.exports = function box (plain_text, external_nonce, msg_key, recp_keys, opts = {}) {
-module.exports = function box (plain_text, external_nonce, msg_key, recp_keys) {
+module.exports = function box (plain_text, external_nonce, msg_key, recp_keys) { // TODO opts = {}
+  if (!plain_text.length) throw error('boxEmptyPlainText')
+  if (!Buffer.isBuffer(external_nonce) || !external_nonce.length) throw error('boxEmptyExternalNonce')
+  if (external_nonce.equals(zerodNonce)) throw error('boxZerodExternalNonce')
+  if (msg_key.equals(zerodMsgKey)) throw error('boxZerodMsgKey')
+
   const read_key = derive(msg_key, labels.read_key)
     const header_key = derive(read_key, labels.header_key)
     const body_key   = derive(read_key, labels.body_key)
