@@ -5,8 +5,7 @@ const decodeLeaves = require('./helpers/decode-leaves')
 const { unbox } = require('../')
 
 const vectors = [
-  require('box2-spec/vectors/unbox1.json'),
-  require('box2-spec/vectors/unbox2.json')
+  require('box2-spec/vectors/unbox1.json')
 ]
 
 test('unbox', t => {
@@ -14,19 +13,19 @@ test('unbox', t => {
 
   vectors.forEach(vector => {
     decodeLeaves(vector)
-    var { ciphertext, external_nonce, recipient_key } = vector.input
+    var { ciphertext, feed_id, prev_msg_id, recipient_key } = vector.input
 
     if (!vector.error_code) {
 
       t.deepEqual(
-        unbox(ciphertext, external_nonce, [recipient_key]),
+        unbox(ciphertext, feed_id, prev_msg_id, [recipient_key]),
         vector.output.plain_text,
         vector.description
       )   
     }
     else {
       try {
-        unbox(ciphertext, external_nonce, [recipient_key])
+        unbox(ciphertext, feed_id, prev_msg_id, [recipient_key])
       } catch (e) {
         t.equal(
           e.code,
