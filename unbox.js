@@ -3,7 +3,8 @@ const na = require('sodium-native')
 const xor = require('buffer-xor/inplace')
 const labels = require('box2-spec/derive_secret/constants.json')
 
-const { Derive, error } = require('./util')
+// const { Derive, error } = require('./util')
+const { Derive } = require('./util')
 
 const zerodNonce = Buffer.alloc(na.crypto_secretbox_NONCEBYTES)
 

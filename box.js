@@ -9,7 +9,6 @@ const zerodMsgKey = Buffer.alloc(na.crypto_secretbox_KEYBYTES)
 
 module.exports = function box (plain_text, feed_id, prev_msg_id, msg_key, recp_keys) { // TODO opts = {}
   if (!plain_text.length) throw error('boxEmptyPlainText')
-  if (typeof msg_key.equals !== 'function') console.log(msg_key, msg_key.equals)
   if (msg_key.equals(zerodMsgKey)) throw error('boxZerodMsgKey')
 
   const derive = Derive(feed_id, prev_msg_id)
