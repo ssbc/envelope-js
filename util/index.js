@@ -1,9 +1,9 @@
-const derive = require('./derive-secret')
-const keySlotFlip = require('./key-slot-flip')
+const Derive = require('./derive-secret')
+const slpEncode = require('./slp-encode')
 const error = require('./error')
 
 module.exports = {
-  derive,
-  keySlotFlip,
+  Derive,
+  slpEncode,
   error
 }

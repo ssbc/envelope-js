@@ -188,7 +188,7 @@ module.exports = {
     'no-useless-constructor': 'error',
     'no-useless-rename': 'error',
     'no-useless-return': 'error',
-    'no-var': 'error',
+    'no-var': 'off',
     'no-void': 'error',
     'no-warning-comments': 'off',
     'no-whitespace-before-property': 'error',
@@ -198,7 +198,7 @@ module.exports = {
       'error',
       'always'
     ],
-    'object-property-newline': 'error',
+    'object-property-newline': 'off',
     'object-shorthand': 'error',
     'one-var': 'off',
     'one-var-declaration-per-line': 'error',

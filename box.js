@@ -1,17 +1,17 @@
 const { Buffer } = require('buffer')
 const na = require('sodium-native')
 const xor = require('buffer-xor/inplace')
-const { derive_secret_labels: labels } = require('box2-spec/constants.json')
+const labels = require('box2-spec/derive_secret/constants.json')
 
-const { derive, keySlotFlip, error } = require('./util')
+const { Derive, error } = require('./util')
 const zerodNonce = Buffer.alloc(na.crypto_secretbox_NONCEBYTES)
 const zerodMsgKey = Buffer.alloc(na.crypto_secretbox_KEYBYTES)
 
-module.exports = function box (plain_text, external_nonce, msg_key, recp_keys) { // TODO opts = {}
+module.exports = function box (plain_text, feed_id, prev_msg_id, msg_key, recp_keys) { // TODO opts = {}
   if (!plain_text.length) throw error('boxEmptyPlainText')
-  if (!Buffer.isBuffer(external_nonce) || !external_nonce.length) throw error('boxEmptyExternalNonce')
-  if (external_nonce.equals(zerodNonce)) throw error('boxZerodExternalNonce')
   if (msg_key.equals(zerodMsgKey)) throw error('boxZerodMsgKey')
+
+  const derive = Derive(feed_id, prev_msg_id)
 
   const read_key = derive(msg_key, labels.read_key)
     const header_key = derive(read_key, labels.header_key)
@@ -37,7 +37,7 @@ module.exports = function box (plain_text, external_nonce, msg_key, recp_keys) {
     header.write...(header_extensions, 3)
     */
 
-  na.crypto_secretbox_easy(header_box, header, external_nonce, header_key)
+  na.crypto_secretbox_easy(header_box, header, zerodNonce, header_key)
 
 
   /* key_slots */
@@ -46,7 +46,7 @@ module.exports = function box (plain_text, external_nonce, msg_key, recp_keys) {
     const _key_slot = cyphertext.slice(32 + 32*i, 64 + 32*i)
 
     msg_key.copy(_key_slot)
-    xor(_key_slot, keySlotFlip(recp_key, external_nonce))
+    xor(_key_slot, derive(recp_key, labels.slot_key))
   })
 
   /* extentions */
@@ -55,7 +55,7 @@ module.exports = function box (plain_text, external_nonce, msg_key, recp_keys) {
 
   /* body_box */
   const body_box = cyphertext.slice(offset)
-  na.crypto_secretbox_easy(body_box, plain_text, external_nonce, body_key)
+  na.crypto_secretbox_easy(body_box, plain_text, zerodNonce, body_key)
 
   return cyphertext
 }

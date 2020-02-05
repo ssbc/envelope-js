@@ -1,9 +1,12 @@
-const { derive_secret_labels: labels } = require('box2-spec/constants.json')
-const derive = require('../../util/derive-secret')
+const labels = require('box2-spec/derive_secret/constants.json')
+const Derive = require('../../util/derive-secret')
 
-const { Key, print } = require('../helpers')
+const { FeedId, PrevMsgId, Key, print } = require('../helpers')
 
-/* derive-secret test vector */
+const feed_id = FeedId()
+const prev_msg_id = PrevMsgId()
+const derive = Derive(feed_id, prev_msg_id)
+
 const msg_key = Key()
   const read_key = derive(msg_key, labels.read_key)
     const header_key = derive(read_key, labels.header_key)
@@ -11,8 +14,10 @@ const msg_key = Key()
 
 const deriveVector = {
   type: 'derive_secret',
-  description: 'all keys in the output should be able to be generated from input.msg_key by using DeriveKeys correctly following the spec.',
+  description: 'All keys in the output should be able to be generated from the input by implementing DeriveSecret correctly.  Use labels from box2-spec/derive_secret/constants.json',
   input: {
+    feed_id,
+    prev_msg_id,
     msg_key
   },
   output: {
@@ -22,4 +27,4 @@ const deriveVector = {
   }
 }
 
-print('derive-secret.json', deriveVector)
+print('derive_secret.json', deriveVector)
