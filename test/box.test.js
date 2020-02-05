@@ -2,9 +2,7 @@ const test = require('tape')
 const vectors = [
   require('box2-spec/vectors/box1.json'),
   require('box2-spec/vectors/box2.json'),
-  require('box2-spec/vectors/box3.json'),
-  require('box2-spec/vectors/box4.json'),
-  require('box2-spec/vectors/box5.json')
+  require('box2-spec/vectors/box3.json')
 ]
 
 // NOTE - decodeLeaves bulk-converts string-encoded buffers
@@ -17,18 +15,18 @@ test('box', t => {
 
   vectors.forEach(vector => {
     decodeLeaves(vector)
-    const { plain_text, external_nonce, msg_key, recp_keys } = vector.input
+    const { plain_text, feed_id, prev_msg_id, msg_key, recp_keys } = vector.input
 
     if (!vector.error_code) {
       t.deepEqual(
-        box(plain_text, external_nonce, msg_key, recp_keys),
+        box(plain_text, feed_id, prev_msg_id, msg_key, recp_keys),
         vector.output.ciphertext,
         vector.description
       )
     }
     else {
       try {
-        box(plain_text, external_nonce, msg_key, recp_keys)
+        box(plain_text, feed_id, prev_msg_id, msg_key, recp_keys)
       } catch (e) {
         t.equal(
           e.code,

@@ -1,4 +1,4 @@
-const { error_codes } = require('box2-spec/constants.json')
+const error_codes = require('box2-spec/error_codes.json')
 
 module.exports = function box2error (code) {
   if (!(code in error_codes)) {

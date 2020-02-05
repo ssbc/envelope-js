@@ -4,6 +4,16 @@ const decodeLeaves = require('./decode-leaves')
 const encodeLeaves = require('./encode-leaves')
 const print = require('./print')
 
+module.exports = {
+  FeedId,
+  PrevMsgId,
+  Key,
+  Nonce,
+  decodeLeaves,
+  encodeLeaves,
+  print
+}
+
 function FeedId () {
   const code = Buffer.from([0]) // ed25519 feed
   const id = Buffer.alloc(32)
@@ -32,14 +42,4 @@ function Nonce () {
   na.randombytes_buf(nonce)
 
   return nonce
-}
-
-module.exports = {
-  FeedId,
-  PrevMsgId,
-  Key,
-  Nonce,
-  decodeLeaves,
-  encodeLeaves,
-  print
 }
