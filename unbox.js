@@ -38,7 +38,7 @@ function unboxKey (ciphertext, feed_id, prev_msg_id, trial_keys, opts = {}) {
   const msg_key = Buffer.alloc(32)
 
   for (let i = 0; i < trial_keys.length; i++) {
-    const flip = derive(trial_keys[i], labels.slot_key)
+    const flip = derive(trial_keys[i], [labels.slot_key])
 
     for (let j = 0; j < _maxAttempts; j++) {
       flip.copy(msg_key)
@@ -47,8 +47,8 @@ function unboxKey (ciphertext, feed_id, prev_msg_id, trial_keys, opts = {}) {
         ciphertext.slice(32 + j*32, 32 + j*32 + 32)
       )
 
-      const read_key = derive(msg_key, labels.read_key)
-        const header_key = derive(read_key, labels.header_key)
+      const read_key = derive(msg_key, [labels.read_key])
+        const header_key = derive(read_key, [labels.header_key])
 
       if (na.crypto_secretbox_open_easy(header, header_box, zerodNonce, header_key)) {
         return read_key
@@ -64,14 +64,14 @@ function unboxBody (ciphertext, feed_id, prev_msg_id, read_key, opts = {}) {
 
   const header = Buffer.alloc(16)
   const header_box = ciphertext.slice(0, 32)
-  const header_key = derive(read_key, labels.header_key)
+  const header_key = derive(read_key, [labels.header_key])
   na.crypto_secretbox_open_easy(header, header_box, zerodNonce, header_key)
 
   const offset = header.readUInt16LE(0)
 
   const body = Buffer.alloc(ciphertext.length - offset - 16)
   const body_box = ciphertext.slice(offset)
-  const body_key = derive(read_key, labels.body_key)
+  const body_key = derive(read_key, [labels.body_key])
   na.crypto_secretbox_open_easy(body, body_box, zerodNonce, body_key)
 
   return body

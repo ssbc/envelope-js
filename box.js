@@ -13,9 +13,9 @@ module.exports = function box (plain_text, feed_id, prev_msg_id, msg_key, recp_k
 
   const derive = Derive(feed_id, prev_msg_id)
 
-  const read_key = derive(msg_key, labels.read_key)
-    const header_key = derive(read_key, labels.header_key)
-    const body_key   = derive(read_key, labels.body_key)
+  const read_key = derive(msg_key, [labels.read_key])
+    const header_key = derive(read_key, [labels.header_key])
+    const body_key   = derive(read_key, [labels.body_key])
 
   const offset = (
     32 +                    // header_box
@@ -45,7 +45,7 @@ module.exports = function box (plain_text, feed_id, prev_msg_id, msg_key, recp_k
     const _key_slot = cyphertext.slice(32 + 32*i, 64 + 32*i)
 
     msg_key.copy(_key_slot)
-    xor(_key_slot, derive(recp_key, labels.slot_key))
+    xor(_key_slot, derive(recp_key, [labels.slot_key]))
   })
 
   /* extentions */
