@@ -15,19 +15,21 @@ module.exports = {
 }
 
 function FeedId () {
-  const code = Buffer.from([0]) // ed25519 feed
+  const type = Buffer.from([0]) // feed
+  const format = Buffer.from([0]) // "classic"
   const id = Buffer.alloc(32)
   na.randombytes_buf(id)
 
-  return Buffer.concat([code, id])
+  return Buffer.concat([type, format, id])
 }
 
 function PrevMsgId () {
-  const code = Buffer.from([1]) // sha256 message
+  const type = Buffer.from([1]) // message
+  const format = Buffer.from([0]) // "classic"
   const id = Buffer.alloc(32)
   na.randombytes_buf(id)
 
-  return Buffer.concat([code, id])
+  return Buffer.concat([type, format, id])
 }
 
 function Key () {
