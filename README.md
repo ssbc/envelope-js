@@ -11,12 +11,12 @@ box2 supports encryption to individuals and groups
 
 ## API
 
-### `box(plain_text, external_nonce, msg_key, recp_keys) => ciphertext`
+### `box(plain_text, feed_id, prev_msg_id, msg_key, recp_keys) => ciphertext`
 
 ...
 
 
-### `unbox(ciphertext, external_nonce, trial_keys, max_attempts) => plain_text | null`
+### `unbox(ciphertext, feed_id, prev_msg_id, trial_keys, max_attempts) => plain_text | null`
 
 ...
 
