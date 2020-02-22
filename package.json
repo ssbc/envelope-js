@@ -14,7 +14,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "box2-spec": "git@github.com:ssbc/box2-spec.git#first_pass",
+    "box2-spec": "git@github.com:ssbc/box2-spec.git#master",
     "buffer-xor": "^2.0.2",
     "futoin-hkdf": "^1.3.0",
     "sodium-native": "^2.4.6"

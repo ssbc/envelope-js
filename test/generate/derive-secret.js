@@ -8,9 +8,9 @@ const prev_msg_id = PrevMsgId()
 const derive = Derive(feed_id, prev_msg_id)
 
 const msg_key = Key()
-  const read_key = derive(msg_key, labels.read_key)
-    const header_key = derive(read_key, labels.header_key)
-    const body_key   = derive(read_key, labels.body_key)
+  const read_key = derive(msg_key, [labels.read_key])
+    const header_key = derive(read_key, [labels.header_key])
+    const body_key   = derive(read_key, [labels.body_key])
 
 const deriveVector = {
   type: 'derive_secret',
