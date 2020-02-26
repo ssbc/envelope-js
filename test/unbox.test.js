@@ -5,7 +5,7 @@ const decodeLeaves = require('./helpers/decode-leaves')
 const { unbox } = require('../')
 
 const vectors = [
-  require('box2-spec/vectors/unbox1.json')
+  require('envelope-spec/vectors/unbox1.json')
 ]
 
 test('unbox', t => {

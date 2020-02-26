@@ -1,7 +1,7 @@
 const { Buffer } = require('buffer')
 const na = require('sodium-native')
 const xor = require('buffer-xor/inplace')
-const labels = require('box2-spec/derive_secret/constants.json')
+const labels = require('envelope-spec/derive_secret/constants.json')
 
 // const { Derive, error } = require('./util')
 const { Derive } = require('./util')

@@ -1,4 +1,4 @@
-const labels = require('box2-spec/derive_secret/constants.json')
+const labels = require('envelope-spec/derive_secret/constants.json')
 const Derive = require('../../util/derive-secret')
 
 const { FeedId, PrevMsgId, Key, print } = require('../helpers')
@@ -14,7 +14,7 @@ const msg_key = Key()
 
 const deriveVector = {
   type: 'derive_secret',
-  description: 'All keys in the output should be able to be generated from the input by implementing DeriveSecret correctly.  Use labels from box2-spec/derive_secret/constants.json',
+  description: 'All keys in the output should be able to be generated from the input by implementing DeriveSecret correctly.  Use labels from envelope-spec/derive_secret/constants.json',
   input: {
     feed_id,
     prev_msg_id,

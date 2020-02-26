@@ -8,7 +8,7 @@ const key_length = 32
 module.exports = function Derive (feed_id, prev_msg_id) {
   return function derive (pk, labels, length = key_length) {
     const info = [
-      'box2',
+      'envelope',
       feed_id,
       prev_msg_id,
       ...labels

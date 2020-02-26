@@ -1,8 +1,8 @@
 const test = require('tape')
 const vectors = [
-  require('box2-spec/vectors/derive_secret1.json'),
+  require('envelope-spec/vectors/derive_secret1.json'),
 ]
-const labels = require('box2-spec/derive_secret/constants.json')
+const labels = require('envelope-spec/derive_secret/constants.json')
 
 const decodeLeaves = require('./helpers/decode-leaves')
 const Derive = require('../util/derive-secret')

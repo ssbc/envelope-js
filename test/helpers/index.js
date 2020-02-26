@@ -8,7 +8,7 @@ module.exports = {
   FeedId,
   PrevMsgId,
   Key,
-  Nonce,
+
   decodeLeaves,
   encodeLeaves,
   print
@@ -37,11 +37,4 @@ function Key () {
   na.randombytes_buf(key)
 
   return key
-}
-
-function Nonce () {
-  const nonce = Buffer.alloc(na.crypto_secretbox_NONCEBYTES)
-  na.randombytes_buf(nonce)
-
-  return nonce
 }

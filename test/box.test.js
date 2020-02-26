@@ -1,8 +1,8 @@
 const test = require('tape')
 const vectors = [
-  require('box2-spec/vectors/box1.json'),
-  require('box2-spec/vectors/box2.json'),
-  require('box2-spec/vectors/box3.json')
+  require('envelope-spec/vectors/box1.json'),
+  require('envelope-spec/vectors/box2.json'),
+  require('envelope-spec/vectors/box3.json')
 ]
 
 // NOTE - decodeLeaves bulk-converts string-encoded buffers

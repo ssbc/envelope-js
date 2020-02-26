@@ -1,6 +1,6 @@
-const error_codes = require('box2-spec/error_codes.json')
+const error_codes = require('envelope-spec/error_codes.json')
 
-module.exports = function box2error (code) {
+module.exports = function envelopeError (code) {
   if (!(code in error_codes)) {
     throw new Error(`trying to throw error with unknown code: ${code}`)
   }

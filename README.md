@@ -1,9 +1,9 @@
-# private-box2
+# envelope-js
 
 A javascript tool for cryptographically "boxing" and "unboxing" messages
-following the [box2-spec](https://github.com/ssbc/box2-spec).
+following the [envelope-spec](https://github.com/ssbc/envelope-spec).
 
-box2 supports encryption to individuals and groups
+envelope supports encryption to individuals and groups
 
 ## Example Usage
 
