@@ -1,83 +1,91 @@
 const { box } = require('../../')
 const { FeedId, PrevMsgId, Key, print } = require('../helpers')
 
-/* box for 2 recps */
-const a = () => {
-  const plain_text = Buffer.from('squeamish ossifrage 😨', 'utf8')
-  const feed_id = FeedId()
-  const prev_msg_id = PrevMsgId()
-  const msg_key = Key()
-  const recp_keys = [Key(), Key()]
+const generators = [
+  /* box for 2 recps */
+  (i) => {
+    const plain_text = Buffer.from('squeamish ossifrage 😨', 'utf8')
+    const feed_id = FeedId()
+    const prev_msg_id = PrevMsgId()
+    const msg_key = Key()
+    const recp_keys = [
+      { key: Key(), scheme: 'envelope-large-symmetric-group' },
+      { key: Key(), scheme: 'envelope-id-based-dm-converted-ed25519' }
+    ]
 
-  const boxVector = {
-    type: 'box',
-    description: 'box for 2 recipients',
-    input: {
-      plain_text,
-      feed_id,
-      prev_msg_id,
-      msg_key,
-      recp_keys
-    },
-    output: {
-      ciphertext: box(plain_text, feed_id, prev_msg_id, msg_key, recp_keys)
-    },
-    error_code: null
+    const boxVector = {
+      type: 'box',
+      description: 'box for 2 recipients (with different key management scheme)',
+      input: {
+        plain_text,
+        feed_id,
+        prev_msg_id,
+        msg_key,
+        recp_keys
+      },
+      output: {
+        ciphertext: box(plain_text, feed_id, prev_msg_id, msg_key, recp_keys)
+      },
+      error_code: null
+    }
+    print(`box${i + 1}.json`, boxVector)
+  },
+
+  /* box for empty plain_text "" */
+  (i) => {
+    const plain_text = Buffer.from('', 'utf8') // <------ no!
+    const feed_id = FeedId()
+    const prev_msg_id = PrevMsgId()
+    const msg_key = Key()
+    const recp_keys = [
+      { key: Key(), key_type: 'envelope-large-symmetric-group' },
+    ]
+
+    const boxVector = {
+      type: 'box',
+      description: 'cannot box an empty plain_text buffer / string',
+      input: {
+        plain_text,
+        feed_id,
+        prev_msg_id,
+        msg_key,
+        recp_keys
+      },
+      output: {
+        ciphertext: null
+      },
+      error_code: 'boxEmptyPlainText'
+    }
+    print(`box${i + 1}.json`, boxVector)
+  },
+
+  /* zerod msg_key */
+  (i) => {
+    const plain_text = Buffer.from('squeamish ossifrage 😨', 'utf8')
+    const feed_id = FeedId()
+    const prev_msg_id = PrevMsgId()
+    const msg_key = Key().fill(0) // <------------ no!
+    const recp_keys = [
+      { key: Key(), key_type: 'envelope-large-symmetric-group' },
+    ]
+
+    const boxVector = {
+      type: 'box',
+      description: 'box with empty (zero filled) msg_key throws error',
+      input: {
+        plain_text,
+        feed_id,
+        prev_msg_id,
+        msg_key,
+        recp_keys
+      },
+      output: {
+        ciphertext: null
+      },
+      error_code: 'boxZerodMsgKey'
+    }
+    print(`box${i + 1}.json`, boxVector)
   }
-  print('box1.json', boxVector)
-}
-a()
+]
 
-/* box for empty plain_text "" */
-const b = () => {
-  const plain_text = Buffer.from('', 'utf8') // <------ no!
-  const feed_id = FeedId()
-  const prev_msg_id = PrevMsgId()
-  const msg_key = Key()
-  const recp_keys = [Key(), Key(), Key()]
-
-  const boxVector = {
-    type: 'box',
-    description: 'cannot box an empty plain_text buffer / string',
-    input: {
-      plain_text,
-      feed_id,
-      prev_msg_id,
-      msg_key,
-      recp_keys
-    },
-    output: {
-      ciphertext: null
-    },
-    error_code: 'boxEmptyPlainText'
-  }
-  print('box2.json', boxVector)
-}
-b()
-
-/* zerod msg_key */
-const c = () => {
-  const plain_text = Buffer.from('squeamish ossifrage 😨', 'utf8')
-  const feed_id = FeedId()
-  const prev_msg_id = PrevMsgId()
-  const msg_key = Key().fill(0) // <------------ no!
-  const recp_keys = [Key(), Key(), Key()]
-
-  const boxVector = {
-    type: 'box',
-    description: 'box with empty (zero filled) msg_key throws error',
-    input: {
-      plain_text,
-      feed_id,
-      prev_msg_id,
-      msg_key,
-      recp_keys
-    },
-    output: {
-      ciphertext: null
-    },
-    error_code: 'boxZerodMsgKey'
-  }
-  print('box3.json', boxVector)
-}
-c()
+generators.forEach((fn, i) => fn(i))

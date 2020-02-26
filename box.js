@@ -23,16 +23,16 @@ module.exports = function box (plain_text, feed_id, prev_msg_id, msg_key, recp_k
     // ??                   // TODO - extensions section
   )
 
-  const cyphertext = Buffer.alloc(
+  const ciphertext = Buffer.alloc(
     offset +                // length of bytes before body_box
     plain_text.length + 16  // body_box = body + HMAC
   )
 
   /* header_box */
-  const header_box = cyphertext.slice(0, 32)
+  const header_box = ciphertext.slice(0, 32)
     const header = header_box.slice(16)
     header.writeUInt16LE(offset, 0)
-    /*
+    /* TODO
     header.write...(flags, 2)
     header.write...(header_extensions, 3)
     */
@@ -41,20 +41,21 @@ module.exports = function box (plain_text, feed_id, prev_msg_id, msg_key, recp_k
 
 
   /* key_slots */
-  recp_keys.forEach((recp_key, i) => {
-    const _key_slot = cyphertext.slice(32 + 32*i, 64 + 32*i)
+  recp_keys.forEach(({ key, scheme }, i) => {
+    const _key_slot = ciphertext.slice(32 + 32*i, 64 + 32*i)
 
     msg_key.copy(_key_slot)
-    xor(_key_slot, derive(recp_key, [labels.slot_key]))
+    xor(_key_slot, derive(key, [labels.slot_key, scheme]))
   })
 
-  /* extentions */
-  // TODO
+  /* TODO
+  extentions
+  */
 
 
   /* body_box */
-  const body_box = cyphertext.slice(offset)
+  const body_box = ciphertext.slice(offset)
   na.crypto_secretbox_easy(body_box, plain_text, zerodNonce, body_key)
 
-  return cyphertext
+  return ciphertext
 }

@@ -27,4 +27,4 @@ const deriveVector = {
   }
 }
 
-print('derive_secret.json', deriveVector)
+print('derive_secret1.json', deriveVector)

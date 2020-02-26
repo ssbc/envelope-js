@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "eslint": "^6.8.0",
+    "is-canonical-base64": "^1.1.1",
     "tap-spec": "^5.0.0",
     "tape": "^4.13.0"
   },

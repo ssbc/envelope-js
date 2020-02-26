@@ -15,6 +15,7 @@ test('box', t => {
 
   vectors.forEach(vector => {
     decodeLeaves(vector)
+
     const { plain_text, feed_id, prev_msg_id, msg_key, recp_keys } = vector.input
 
     if (!vector.error_code) {
