@@ -16,17 +16,17 @@ module.exports = function KeySlot (derive) {
   }
 
   function unslot (msg_key, key_slot, recipient) {
-    if (_flip) {
-      _flip.copy(msg_key)
-    }
-    else {
-      flip(recipient).copy(msg_key)
-    }
+    if (_flip) _flip.copy(msg_key)
+    else flip(recipient).copy(msg_key)
 
     xor(msg_key, key_slot)
   }
 
   function flip (recipient) {
+    if (!recipient.key) throw new Error('envelope/key-slot: recipient is expected to have a key')
+    if (!recipient.scheme) throw new Error('envelope/key-slot: recipient is expected to have a scheme')
+
+    // TODO complain here if recipient is wrong format, as the error is hard to decipher
     return derive(recipient.key, [labels.slot_key, recipient.scheme])
   }
 
