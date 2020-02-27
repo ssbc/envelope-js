@@ -13,19 +13,19 @@ test('unbox', t => {
 
   vectors.forEach(vector => {
     decodeLeaves(vector)
-    var { ciphertext, feed_id, prev_msg_id, recipient_key } = vector.input
+    var { ciphertext, feed_id, prev_msg_id, recipient } = vector.input
 
     if (!vector.error_code) {
 
       t.deepEqual(
-        unbox(ciphertext, feed_id, prev_msg_id, [recipient_key]),
+        unbox(ciphertext, feed_id, prev_msg_id, [recipient]),
         vector.output.plain_text,
         vector.description
-      )   
+      )
     }
     else {
       try {
-        unbox(ciphertext, feed_id, prev_msg_id, [recipient_key])
+        unbox(ciphertext, feed_id, prev_msg_id, [recipient])
       } catch (e) {
         t.equal(
           e.code,

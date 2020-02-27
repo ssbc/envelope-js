@@ -6,7 +6,8 @@ const print = require('./print')
 
 module.exports = {
   FeedId,
-  PrevMsgId,
+  MsgId,
+  PrevMsgId: MsgId,
   Key,
 
   decodeLeaves,
@@ -23,7 +24,7 @@ function FeedId () {
   return Buffer.concat([type, format, id])
 }
 
-function PrevMsgId () {
+function MsgId () {
   const type = Buffer.from([1]) // message
   const format = Buffer.from([0]) // "classic"
   const id = Buffer.alloc(32)

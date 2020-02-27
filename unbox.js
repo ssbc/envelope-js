@@ -1,10 +1,8 @@
 const { Buffer } = require('buffer')
 const na = require('sodium-native')
-const xor = require('buffer-xor/inplace')
 const labels = require('envelope-spec/derive_secret/constants.json')
 
-// const { Derive, error } = require('./util')
-const { Derive } = require('./util')
+const { Derive, KeySlot } = require('./util')
 
 const zerodNonce = Buffer.alloc(na.crypto_secretbox_NONCEBYTES)
 
@@ -37,14 +35,15 @@ function unboxKey (ciphertext, feed_id, prev_msg_id, trial_keys, opts = {}) {
   )
   const msg_key = Buffer.alloc(32)
 
+  const { unslot, setFlip } = KeySlot(derive)
+
   for (let i = 0; i < trial_keys.length; i++) {
-    const flip = derive(trial_keys[i], [labels.slot_key])
+    setFlip(trial_keys[i]) // hack which saves us some computation in #unslot below
 
     for (let j = 0; j < _maxAttempts; j++) {
-      flip.copy(msg_key)
-      xor(
-        msg_key, // currently "flip", about to be over-written with result of xor
-        ciphertext.slice(32 + j*32, 32 + j*32 + 32)
+      unslot(
+        msg_key,
+        ciphertext.slice(32 + j*32, 32 + j*32 + 32) // key_slot
       )
 
       const read_key = derive(msg_key, [labels.read_key])

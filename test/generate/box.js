@@ -13,7 +13,7 @@ const generators = [
       { key: Key(), scheme: 'envelope-id-based-dm-converted-ed25519' }
     ]
 
-    const boxVector = {
+    const vector = {
       type: 'box',
       description: 'box for 2 recipients (with different key management scheme)',
       input: {
@@ -28,7 +28,7 @@ const generators = [
       },
       error_code: null
     }
-    print(`box${i + 1}.json`, boxVector)
+    print(`box${i + 1}.json`, vector)
   },
 
   /* box for empty plain_text "" */
@@ -41,7 +41,7 @@ const generators = [
       { key: Key(), key_type: 'envelope-large-symmetric-group' },
     ]
 
-    const boxVector = {
+    const vector = {
       type: 'box',
       description: 'cannot box an empty plain_text buffer / string',
       input: {
@@ -56,7 +56,7 @@ const generators = [
       },
       error_code: 'boxEmptyPlainText'
     }
-    print(`box${i + 1}.json`, boxVector)
+    print(`box${i + 1}.json`, vector)
   },
 
   /* zerod msg_key */
@@ -69,7 +69,7 @@ const generators = [
       { key: Key(), key_type: 'envelope-large-symmetric-group' },
     ]
 
-    const boxVector = {
+    const vector = {
       type: 'box',
       description: 'box with empty (zero filled) msg_key throws error',
       input: {
@@ -84,7 +84,7 @@ const generators = [
       },
       error_code: 'boxZerodMsgKey'
     }
-    print(`box${i + 1}.json`, boxVector)
+    print(`box${i + 1}.json`, vector)
   }
 ]
 

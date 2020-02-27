@@ -7,6 +7,6 @@ Run these tests with `npm run test`
 
 ## generate
 
-run `generate.js` to make example test-vectors which could be moved into 
+run `npm run generate` to make example test-vectors which could be moved into 
 the `envelope-spec` repo for all langauges to access.
 
