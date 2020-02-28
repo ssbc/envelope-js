@@ -1,6 +1,6 @@
 const na = require('sodium-native')
 const { isBuffer } = Buffer
-const TYPES = require('envelope-spec/encoding/tfk.json')
+const TYPES = require('@envelope/spec/encoding/tfk.json')
 
 class Cipherlink {
   constructor (opts = {}) {

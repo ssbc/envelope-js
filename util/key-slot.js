@@ -1,5 +1,5 @@
 const xor = require('buffer-xor/inplace')
-const labels = require('envelope-spec/derive_secret/constants.json')
+const labels = require('@envelope/spec/derive_secret/constants.json')
 
 module.exports = function KeySlot (derive) {
   if (typeof derive !== 'function') throw new Error(`KeySlot requires a derive function, got: '${typeof derive}'`)

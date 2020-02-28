@@ -1,6 +1,6 @@
 const na = require('sodium-native')
 const hkdf = require('futoin-hkdf')
-const labels = require('envelope-spec/cloaked_id/constants.json')
+const labels = require('@envelope/spec/cloaked_msg_id/constants.json')
 
 const encode = require('./util/slp-encode')
 
@@ -14,7 +14,7 @@ module.exports = class CloakedMsgId {
       this.key = null
       return
     }
-   
+
     var info = [
       Buffer.from(labels.cloaked_msg_id, 'utf8'),
       public_msg_id
@@ -26,6 +26,11 @@ module.exports = class CloakedMsgId {
   toBuffer () {
     if (this.key === null) throw new Error('CloakedMsgId had null key value')
     return this.key
+  }
+
+  toString (encoding = 'base64') {
+    if (this.key === null) throw new Error('CloakedMsgId had null key value')
+    return this.key.toString(encoding)
   }
 
   mock () {

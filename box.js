@@ -1,6 +1,6 @@
 const { Buffer } = require('buffer')
 const na = require('sodium-native')
-const labels = require('envelope-spec/derive_secret/constants.json')
+const LABELS = require('@envelope/spec/derive_secret/constants.json')
 
 const { Derive, KeySlot, error } = require('./util')
 const zerodNonce = Buffer.alloc(na.crypto_secretbox_NONCEBYTES)
@@ -12,9 +12,9 @@ module.exports = function box (plain_text, feed_id, prev_msg_id, msg_key, recp_k
 
   const derive = Derive(feed_id, prev_msg_id)
 
-  const read_key = derive(msg_key, [labels.read_key])
-    const header_key = derive(read_key, [labels.header_key])
-    const body_key   = derive(read_key, [labels.body_key])
+  const read_key = derive(msg_key, [LABELS.read_key])
+    const header_key = derive(read_key, [LABELS.header_key])
+    const body_key   = derive(read_key, [LABELS.body_key])
 
   const offset = (
     32 +                    // header_box

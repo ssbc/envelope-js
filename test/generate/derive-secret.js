@@ -1,4 +1,4 @@
-const labels = require('envelope-spec/derive_secret/constants.json')
+const labels = require('@envelope/spec/derive_secret/constants.json')
 const Derive = require('../../util/derive-secret')
 
 const { FeedId, PrevMsgId, Key, print } = require('../helpers')
