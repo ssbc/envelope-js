@@ -1,12 +1,12 @@
 const { Buffer } = require('buffer')
 const na = require('sodium-native')
-const LABELS = require('@envelope/spec/derive_secret/constants.json')
+const LABELS = require('envelope-spec/derive_secret/constants.json')
 
 const { Derive, KeySlot } = require('./util')
 
 const zerodNonce = Buffer.alloc(na.crypto_secretbox_NONCEBYTES)
 
-module.exports = function unbox (ciphertext, feed_id, prev_msg_id, trial_keys, opts = {}) {
+function unbox (ciphertext, feed_id, prev_msg_id, trial_keys, opts = {}) {
   const {
     maxAttempts = 8
   } = opts
@@ -17,7 +17,6 @@ module.exports = function unbox (ciphertext, feed_id, prev_msg_id, trial_keys, o
 
   return unboxBody(ciphertext, feed_id, prev_msg_id, read_key, { derive })
 }
-
 
 function unboxKey (ciphertext, feed_id, prev_msg_id, trial_keys, opts = {}) {
   const {
@@ -74,4 +73,10 @@ function unboxBody (ciphertext, feed_id, prev_msg_id, read_key, opts = {}) {
   na.crypto_secretbox_open_easy(body, body_box, zerodNonce, body_key)
 
   return body
+}
+
+module.exports = {
+  unbox,
+  unboxKey,
+  unboxBody
 }

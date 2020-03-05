@@ -15,7 +15,7 @@ module.exports = function DeriveSecret (feed_id, prev_msg_id) {
     ]
 
     if (info.some(i => i.length === 0)) {
-      throw new Error(`DeriveSecret: zero length info buffer found`)
+      throw new Error('DeriveSecret: zero length info buffer found')
     }
 
     return hkdf.expand(hash, hash_len, pk, length, encode(info))

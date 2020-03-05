@@ -1,6 +1,6 @@
 const test = require('tape')
 const vectors = [
-  require('@envelope/spec/vectors/cloaked_id1.json')
+  require('envelope-spec/vectors/cloaked_id1.json')
 ]
 const decodeLeaves = require('./helpers/decode-leaves')
 const { CloakedMsgId } = require('../')

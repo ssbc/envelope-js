@@ -1,6 +1,6 @@
 const test = require('tape')
 const vectors = [
-  require('@envelope/spec/vectors/slot1.json')
+  require('envelope-spec/vectors/slot1.json')
 ]
 
 // NOTE - decodeLeaves bulk-converts string-encoded buffers

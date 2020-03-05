@@ -1,6 +1,6 @@
 const { Buffer } = require('buffer')
 const na = require('sodium-native')
-const LABELS = require('@envelope/spec/derive_secret/constants.json')
+const LABELS = require('envelope-spec/derive_secret/constants.json')
 
 const { Derive, KeySlot, error } = require('./util')
 const zerodNonce = Buffer.alloc(na.crypto_secretbox_NONCEBYTES)

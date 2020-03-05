@@ -1,4 +1,4 @@
-const error_codes = require('@envelope/spec/error_codes.json')
+const error_codes = require('envelope-spec/error_codes.json')
 
 module.exports = function envelopeError (code) {
   if (!(code in error_codes)) {

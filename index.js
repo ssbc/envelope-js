@@ -6,7 +6,7 @@ const cipherlinks = require('./util/cipherlinks')
 
 module.exports = {
   box,
-  unbox,
+  ...unbox,
   DeriveSecret,
   CloakedMsgId,
   ...cipherlinks

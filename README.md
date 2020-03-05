@@ -1,4 +1,4 @@
-# @envelope/js
+# envelope-js
 
 A javascript tool for cryptographically "boxing" and "unboxing" messages
 following the [envelope spec](https://github.com/ssbc/envelope-spec).
@@ -8,7 +8,7 @@ envelope supports encryption to individuals and groups
 ## Example Usage
 
 ```js
-var { box, unbox, CloakedMsgId } = require('@envelope/js')
+var { box, unbox, CloakedMsgId } = require('envelope-js')
 ```
 
 ...
@@ -55,7 +55,7 @@ where:
 
 ### `new CloakedMsgId(public_msg_id, read_key) => cloakedMsgId`
 
-Determine a cloaked message id for a published message following the `@envelope/spec/cloaked_msg_id/README.md`
+Determine a cloaked message id for a published message following the `envelope-spec/cloaked_msg_id/README.md`
 
 where:
 - `public_msg_id` *Buffer* is the id of a enveloped message that's been published (it has an id as it's part of a feed / chain)
