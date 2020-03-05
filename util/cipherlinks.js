@@ -15,6 +15,10 @@ class Cipherlink {
     }
   }
 
+  toBuffer () {
+    return this.key
+  }
+
   toTFK () {
     return Buffer.concat([
       Buffer.from([this.type]),
