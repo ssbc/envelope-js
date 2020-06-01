@@ -39,6 +39,7 @@ where:
 - `max_attempts` *Integer* (default: 8) how many key_slots you want to assume the envelope has
 - `plain_text` *Buffer* the envelope contents
 
+NOTE: we also expose `unboxKey` and `unboxBody` for convenience.
 
 ### `DeriveSecret(feed_id, prev_msg_id) => derive`
 
@@ -64,6 +65,13 @@ where:
   - `toBuffer() => Buffer` which returns the cloaked id key as a Buffer
   - `toString(encoding) => String` which returns the cloaked id key as a Buffer (encoding defaults to 'base64')
   - `mock() => cloakedMsgId` a method for testing. populates the id with random content. if using this, instantiate with no args.
+
+
+### `slp.encode(info) => Buffer`
+
+where `info` is an Array of Buffers.
+
+This is "short length-prefixed encoding", see https://github.com/ssbc/envelope-spec/blob/master/encoding/slp.md
 
 ...
 

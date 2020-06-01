@@ -1,13 +1,20 @@
 const box = require('./box')
-const unbox = require('./unbox')
+const { unbox, unboxKey, unboxBody } = require('./unbox')
+
+const { DeriveSecret, slpEncode, Cipherlink } = require('./util')
 const CloakedMsgId = require('./cloaked-msg-id')
-const DeriveSecret = require('./util/derive-secret')
-const cipherlinks = require('./util/cipherlinks')
 
 module.exports = {
   box,
-  ...unbox,
+  unbox,
+  unboxKey,
+  unboxBody,
+
   DeriveSecret,
-  CloakedMsgId,
-  ...cipherlinks
+  slp: {
+    encode: slpEncode
+  },
+  Cipherlink,
+
+  CloakedMsgId
 }

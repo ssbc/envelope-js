@@ -1,7 +1,7 @@
 const na = require('sodium-native')
 const TYPES = require('envelope-spec/encoding/tfk.json')
 
-class Cipherlink {
+module.exports = class Cipherlink {
   constructor (opts = {}) {
     this.type = opts.type
     this.format = opts.format
@@ -43,8 +43,4 @@ class Cipherlink {
 
     return this
   }
-}
-
-module.exports = {
-  Cipherlink
 }
