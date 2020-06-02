@@ -6,7 +6,7 @@ const vectors = [
 // NOTE - decodeLeaves bulk-converts string-encoded buffers
 // back into Buffers so the vector can be used directly
 const decodeLeaves = require('./helpers/decode-leaves')
-const { KeySlot, Derive } = require('../util')
+const { KeySlot, DeriveSecret } = require('../util')
 
 test('unslot', t => {
   t.plan(vectors.length + 1)
@@ -16,7 +16,7 @@ test('unslot', t => {
 
     const { key_slot, feed_id, prev_msg_id, recipient } = vector.input
 
-    const derive = Derive(feed_id, prev_msg_id)
+    const derive = DeriveSecret(feed_id, prev_msg_id)
     const msg_key = Buffer.alloc(32)
 
     const { unslot } = KeySlot(derive)
@@ -31,7 +31,7 @@ test('unslot', t => {
 
   const { key_slot, feed_id, prev_msg_id, recipient } = vector.input
 
-  const derive = Derive(feed_id, prev_msg_id)
+  const derive = DeriveSecret(feed_id, prev_msg_id)
   const msg_key = Buffer.alloc(32)
 
   const { unslot, setFlip } = KeySlot(derive)

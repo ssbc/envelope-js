@@ -1,11 +1,11 @@
 const labels = require('envelope-spec/derive_secret/constants.json')
-const Derive = require('../../util/derive-secret')
+const DeriveSecret = require('../../util/derive-secret')
 
 const { FeedId, PrevMsgId, Key, print } = require('../helpers')
 
 const feed_id = FeedId()
 const prev_msg_id = PrevMsgId()
-const derive = Derive(feed_id, prev_msg_id)
+const derive = DeriveSecret(feed_id, prev_msg_id)
 
 const msg_key = Key()
   const read_key = derive(msg_key, [labels.read_key])

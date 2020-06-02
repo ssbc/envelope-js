@@ -1,6 +1,6 @@
 
 const { FeedId, MsgId, Key, print } = require('../helpers')
-const Derive = require('../../util/derive-secret')
+const DeriveSecret = require('../../util/derive-secret')
 const KeySlot = require('../../util/key-slot')
 
 const generators = [
@@ -14,7 +14,7 @@ const generators = [
       scheme: 'symmetic-group-shared-key-for-example'
     }
 
-    const derive = Derive(feed_id, prev_msg_id)
+    const derive = DeriveSecret(feed_id, prev_msg_id)
     const key_slot = Buffer.alloc(32)
     KeySlot(derive).slot(key_slot, msg_key, recipient)
 

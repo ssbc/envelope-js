@@ -2,7 +2,7 @@ const { Buffer } = require('buffer')
 const na = require('sodium-native')
 const LABELS = require('envelope-spec/derive_secret/constants.json')
 
-const { Derive, KeySlot } = require('./util')
+const { DeriveSecret, KeySlot } = require('./util')
 
 const zerodNonce = Buffer.alloc(na.crypto_secretbox_NONCEBYTES)
 
@@ -11,7 +11,7 @@ function unbox (ciphertext, feed_id, prev_msg_id, trial_keys, opts = {}) {
     maxAttempts = 8
   } = opts
 
-  const derive = Derive(feed_id, prev_msg_id)
+  const derive = DeriveSecret(feed_id, prev_msg_id)
   const read_key = unboxKey(ciphertext, feed_id, prev_msg_id, trial_keys, { maxAttempts, derive })
   if (!read_key) return null
 
@@ -21,7 +21,7 @@ function unbox (ciphertext, feed_id, prev_msg_id, trial_keys, opts = {}) {
 function unboxKey (ciphertext, feed_id, prev_msg_id, trial_keys, opts = {}) {
   const {
     maxAttempts = 8,
-    derive = Derive(feed_id, prev_msg_id)
+    derive = DeriveSecret(feed_id, prev_msg_id)
   } = opts
 
   const header_box = ciphertext.slice(0, 32)
@@ -57,7 +57,7 @@ function unboxKey (ciphertext, feed_id, prev_msg_id, trial_keys, opts = {}) {
 
 function unboxBody (ciphertext, feed_id, prev_msg_id, read_key, opts = {}) {
   const {
-    derive = Derive(feed_id, prev_msg_id)
+    derive = DeriveSecret(feed_id, prev_msg_id)
   } = opts
 
   const header = Buffer.alloc(16)

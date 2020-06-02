@@ -5,14 +5,14 @@ const vectors = [
 const labels = require('envelope-spec/derive_secret/constants.json')
 
 const decodeLeaves = require('./helpers/decode-leaves')
-const Derive = require('../util/derive-secret')
+const DeriveSecret = require('../util/derive-secret')
 
 test('derive-secret', t => {
   vectors.forEach(vector => {
     decodeLeaves(vector)
 
     const { feed_id, prev_msg_id, msg_key } = vector.input
-    const derive = Derive(feed_id, prev_msg_id)
+    const derive = DeriveSecret(feed_id, prev_msg_id)
 
     const read_key = derive(msg_key, [labels.read_key])
       const header_key = derive(read_key, [labels.header_key])
