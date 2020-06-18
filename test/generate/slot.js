@@ -19,7 +19,7 @@ const generators = [
 
     const vector = {
       type: 'slot',
-      description: 'derive a key_slot for a specific recipient (note feed_id + prev_msg_id are for the feed this message is part of, not the recipient',
+      description: 'derive a key_slot for a specific recipient (note feed_id + prev_msg_id are for the feed this message is part of, not the recipient. Note feed_id prev_msg_id are TFK encoded buffers. Recipient is a shared key you and some others have access to, you are sending "to" that.',
       input: {
         feed_id,
         prev_msg_id,

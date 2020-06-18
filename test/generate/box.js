@@ -60,32 +60,33 @@ const generators = [
   },
 
   /* zerod msg_key */
-  (i) => {
-    const plain_text = Buffer.from('squeamish ossifrage 😨', 'utf8')
-    const feed_id = FeedId()
-    const prev_msg_id = PrevMsgId()
-    const msg_key = Key().fill(0) // <------------ no!
-    const recp_keys = [
-      { key: Key(), key_type: 'envelope-large-symmetric-group' },
-    ]
+  // NOTE - removed because keks didn't think this was important
+  // (i) => {
+  //   const plain_text = Buffer.from('squeamish ossifrage 😨', 'utf8')
+  //   const feed_id = FeedId()
+  //   const prev_msg_id = PrevMsgId()
+  //   const msg_key = Key().fill(0) // <------------ no!
+  //   const recp_keys = [
+  //     { key: Key(), key_type: 'envelope-large-symmetric-group' },
+  //   ]
 
-    const vector = {
-      type: 'box',
-      description: 'box with empty (zero filled) msg_key throws error',
-      input: {
-        plain_text,
-        feed_id,
-        prev_msg_id,
-        msg_key,
-        recp_keys
-      },
-      output: {
-        ciphertext: null
-      },
-      error_code: 'boxZerodMsgKey'
-    }
-    print(`box${i + 1}.json`, vector)
-  }
+  //   const vector = {
+  //     type: 'box',
+  //     description: 'box with empty (zero filled) msg_key throws error',
+  //     input: {
+  //       plain_text,
+  //       feed_id,
+  //       prev_msg_id,
+  //       msg_key,
+  //       recp_keys
+  //     },
+  //     output: {
+  //       ciphertext: null
+  //     },
+  //     error_code: 'boxZerodMsgKey'
+  //   }
+  //   print(`box${i + 1}.json`, vector)
+  // }
 ]
 
 generators.forEach((fn, i) => fn(i))

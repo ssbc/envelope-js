@@ -14,7 +14,7 @@ const msg_key = Key()
 
 const deriveVector = {
   type: 'derive_secret',
-  description: 'All keys in the output should be able to be generated from the input by implementing DeriveSecret correctly.  Use labels from envelope-spec/derive_secret/constants.json',
+  description: 'All keys in the output should be able to be generated from the input by implementing DeriveSecret correctly. Note feed_id prev_msg_id are TFK encoded buffers. Use labels from envelope-spec/derive_secret/constants.json',
   input: {
     feed_id,
     prev_msg_id,

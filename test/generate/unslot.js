@@ -19,7 +19,7 @@ const generators = [
     KeySlot(derive).slot(key_slot, msg_key, recipient)
 
     const vector = {
-      type: 'unbox',
+      type: 'unslot',
       description: 'from a key_slot, successfully derive the msg_key',
       input: {
         key_slot,
