@@ -10,7 +10,8 @@
   "scripts": {
     "generate": "rm test/generate/vectors/* && node test/generate/index.js",
     "test": "npm run test:js && npm run lint",
-    "test:js": "tape 'test/**/*.test.js' | tap-spec",
+    "test:js": "tape 'test/**/*.test.js'",
+    "test:pretty": "tape 'test/**/*.test.js' | tap-spec && npm run lint",
     "lint": "eslint ."
   },
   "dependencies": {
