@@ -7,6 +7,8 @@ const { DeriveSecret, KeySlot } = require('./util')
 const zerodNonce = Buffer.alloc(na.crypto_secretbox_NONCEBYTES)
 
 function unbox (ciphertext, feed_id, prev_msg_id, trial_keys, opts = {}) {
+  if (trial_keys.length === 0) return null
+
   const {
     maxAttempts = 8
   } = opts
@@ -19,6 +21,8 @@ function unbox (ciphertext, feed_id, prev_msg_id, trial_keys, opts = {}) {
 }
 
 function unboxKey (ciphertext, feed_id, prev_msg_id, trial_keys, opts = {}) {
+  if (trial_keys.length === 0) return null
+  
   const {
     maxAttempts = 8,
     derive = DeriveSecret(feed_id, prev_msg_id)
