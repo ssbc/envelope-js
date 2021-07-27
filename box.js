@@ -13,8 +13,8 @@ module.exports = function box (plain_text, feed_id, prev_msg_id, msg_key, recp_k
   const derive = DeriveSecret(feed_id, prev_msg_id)
 
   const read_key = derive(msg_key, [LABELS.read_key])
-    const header_key = derive(read_key, [LABELS.header_key])
-    const body_key   = derive(read_key, [LABELS.body_key])
+  const header_key = derive(read_key, [LABELS.header_key])
+  const body_key = derive(read_key, [LABELS.body_key])
 
   const offset = (
     32 +                    // header_box
@@ -29,12 +29,12 @@ module.exports = function box (plain_text, feed_id, prev_msg_id, msg_key, recp_k
 
   /* header_box */
   const header_box = ciphertext.slice(0, 32)
-    const header = header_box.slice(16)
-    header.writeUInt16LE(offset, 0)
-    /* TODO
-    header.write...(flags, 2)
-    header.write...(header_extensions, 3)
-    */
+  const header = header_box.slice(16)
+  header.writeUInt16LE(offset, 0)
+  /* TODO
+     header.write...(flags, 2)
+     header.write...(header_extensions, 3)
+  */
 
   na.crypto_secretbox_easy(header_box, header, zerodNonce, header_key)
 

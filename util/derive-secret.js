@@ -1,11 +1,14 @@
 const hkdf = require('futoin-hkdf')
 const encode = require('./slp-encode')
+const { convertNilForEnvelopeSpec } = require('ssb-bfe')
 
 const hash = 'sha256'
 const hash_len = hkdf.hash_length(hash)
 const key_length = 32
 
 module.exports = function DeriveSecret (feed_id, prev_msg_id) {
+  prev_msg_id = convertNilForEnvelopeSpec(prev_msg_id, feed_id)
+
   return function derive (pk, labels, length = key_length) {
     const info = [
       toBuffer('envelope'),
