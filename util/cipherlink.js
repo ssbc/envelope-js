@@ -8,7 +8,7 @@ module.exports = class Cipherlink {
     this.key = opts.key
 
     if (this.key) {
-      const expected = TYPES[this.type].formats[this.format].key_bytes
+      const expected = TYPES[this.type].formats[this.format].data_length
       if (this.key.length !== expected) {
         throw new Error(`Cypherlink expected to have key of length ${expected} bytes, got ${this.key.length}`)
       }
