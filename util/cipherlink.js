@@ -37,7 +37,7 @@ module.exports = class Cipherlink {
   mock () {
     const bytes = (this.type === null && this.format === null)
       ? 32 //
-      : TYPES[this.type].formats[this.format].key_bytes
+      : TYPES[this.type].formats[this.format].data_length
     this.key = Buffer.alloc(bytes)
     na.randombytes_buf(this.key)
 
