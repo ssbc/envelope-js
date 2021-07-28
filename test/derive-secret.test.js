@@ -15,8 +15,8 @@ test('derive-secret', t => {
     const derive = DeriveSecret(feed_id, prev_msg_id)
 
     const read_key = derive(msg_key, [labels.read_key])
-      const header_key = derive(read_key, [labels.header_key])
-      const body_key   = derive(read_key, [labels.body_key])
+    const header_key = derive(read_key, [labels.header_key])
+    const body_key   = derive(read_key, [labels.body_key])
 
     t.deepEqual(read_key, vector.output.read_key, 'derive read_key')
     t.deepEqual(header_key, vector.output.header_key, 'derive header_key')

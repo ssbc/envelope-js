@@ -1,5 +1,5 @@
 const na = require('sodium-native')
-const TYPES = require('envelope-spec/encoding/tfk.json')
+const TYPES = require('ssb-binary-field-encodings-spec/bfe.json')
 
 module.exports = class Cipherlink {
   constructor (opts = {}) {
