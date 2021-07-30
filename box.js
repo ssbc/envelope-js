@@ -12,6 +12,9 @@ module.exports = function box (plain_text, feed_id, prev_msg_id, msg_key, recp_k
 
   const derive = DeriveSecret(feed_id, prev_msg_id)
 
+  // read_key
+  //   ├──> header_key
+  //   └──> body_key
   const read_key = derive(msg_key, [LABELS.read_key])
   const header_key = derive(read_key, [LABELS.header_key])
   const body_key = derive(read_key, [LABELS.body_key])

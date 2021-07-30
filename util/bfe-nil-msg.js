@@ -1,17 +1,18 @@
-const TYPES = require('ssb-binary-field-encodings-spec/bfe.json')
+const { bfeNamedTypes } = require('ssb-bfe')
 const error = require('./error')
 
-const NIL_TFD = Buffer.from([TYPES[6].code, TYPES[6].formats[2].code])
+const GENERIC = bfeNamedTypes['generic']
+const NIL_TFD = Buffer.from([GENERIC.code, GENERIC.formats['nil'].code])
 
-const FEED = TYPES[0]
-const CLASSIC_FEED_TF = Buffer.from([FEED.code, FEED.formats[0].code])
-const GABBYGR_FEED_TF = Buffer.from([FEED.code, FEED.formats[1].code])
-const BENDYBT_FEED_TF = Buffer.from([FEED.code, FEED.formats[3].code])
+const FEED = bfeNamedTypes['feed']
+const CLASSIC_FEED_TF = Buffer.from([FEED.code, FEED.formats['ssb/classic'].code])
+const GABBYGR_FEED_TF = Buffer.from([FEED.code, FEED.formats['ssb/gabby-grove'].code])
+const BENDYBT_FEED_TF = Buffer.from([FEED.code, FEED.formats['ssb/bendy-butt'].code])
 
-const MSG = TYPES[1]
-const CLASSIC_MSG_TF = Buffer.from([MSG.code, MSG.formats[0].code])
-const GABBYGR_MSG_TF = Buffer.from([MSG.code, MSG.formats[1].code])
-const BENDYBT_MSG_TF = Buffer.from([MSG.code, MSG.formats[4].code])
+const MSG = bfeNamedTypes['msg']
+const CLASSIC_MSG_TF = Buffer.from([MSG.code, MSG.formats['ssb/classic'].code])
+const GABBYGR_MSG_TF = Buffer.from([MSG.code, MSG.formats['ssb/gabby-grove'].code])
+const BENDYBT_MSG_TF = Buffer.from([MSG.code, MSG.formats['ssb/bendy-butt'].code])
 
 module.exports = function convertBFENilMsg(msgTFD, feedTFK) {
   if (msgTFD.equals(NIL_TFD)) {
