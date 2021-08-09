@@ -24,7 +24,7 @@ where:
 - `msg_key` *Buffer* a randomised 32 Bytes which will be the unique key for this message
 - `recps_keys` *Array* is a collection of items of form `{ key, scheme }`, where
     - `key` *Buffer* is the key the particular recipient
-    - `scheme` *String* is the type of key / the key management scheme for this recipient
+    - `scheme` *String|Buffer* is the type of key / the key management scheme for this recipient
 
 
 ### `unbox(ciphertext, feed_id, prev_msg_id, trial_keys, max_attempts) => plain_text | null`
@@ -35,7 +35,7 @@ where:
 - `prev_msg_id` *Buffer* is a TFK encoded value of the id of last message of this feeds chain
 - `trial_keys` *Array* is a collection of items of form `{ key, scheme }`, where
     - `key` *Buffer* is the key the particular recipient
-    - `scheme` *String* is the type of key / the key management scheme for this recipient
+    - `scheme` *String|Buffer* is the type of key / the key management scheme for this recipient
 - `max_attempts` *Integer* (default: 8) how many key_slots you want to assume the envelope has
 - `plain_text` *Buffer* the envelope contents
 

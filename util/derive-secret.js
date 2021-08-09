@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const hkdf = require('futoin-hkdf')
 const encode = require('./slp-encode')
 const convertBFENilMsg = require('./bfe-nil-msg')

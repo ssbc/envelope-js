@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const { Buffer } = require('buffer')
 const na = require('sodium-native')
 const LABELS = require('envelope-spec/derive_secret/constants.json')
@@ -20,14 +21,14 @@ module.exports = function box (plain_text, feed_id, prev_msg_id, msg_key, recp_k
   const body_key = derive(read_key, [LABELS.body_key])
 
   const offset = (
-    32 +                    // header_box
-    recp_keys.length * 32   // key_slots
-    // ??                   // TODO - extensions section
+    32 + //               // header_box
+    recp_keys.length * 32 // key_slots
+    // ??                 // TODO - extensions section
   )
 
   const ciphertext = Buffer.alloc(
-    offset +                // length of bytes before body_box
-    plain_text.length + 16  // body_box = body + HMAC
+    offset + // length of bytes before body_box
+    plain_text.length + 16 // body_box = body + HMAC
   )
 
   /* header_box */
@@ -41,17 +42,15 @@ module.exports = function box (plain_text, feed_id, prev_msg_id, msg_key, recp_k
 
   na.crypto_secretbox_easy(header_box, header, zerodNonce, header_key)
 
-
   /* key_slots */
   const { slot } = KeySlot(derive)
   recp_keys.forEach((recp, i) => {
-    slot(ciphertext.slice(32 + 32*i, 64 + 32*i), msg_key, recp)
+    slot(ciphertext.slice(32 + 32 * i, 64 + 32 * i), msg_key, recp)
   })
 
   /* TODO
   extentions
   */
-
 
   /* body_box */
   const body_box = ciphertext.slice(offset)

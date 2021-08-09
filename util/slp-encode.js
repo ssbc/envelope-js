@@ -1,5 +1,5 @@
 module.exports = function slpEncode (arr) {
-  var output = Buffer.alloc(0)
+  let output = Buffer.alloc(0)
 
   arr.forEach(el => {
     if (!Buffer.isBuffer(el)) throw new Error(`slp.encode expects Buffers, got ${el}`)

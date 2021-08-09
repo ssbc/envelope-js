@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const xor = require('buffer-xor/inplace')
 const labels = require('envelope-spec/derive_secret/constants.json')
 
@@ -10,7 +11,7 @@ module.exports = function KeySlot (derive) {
     xor(key_slot, flip(recipient))
   }
 
-  var _flip = null
+  let _flip = null
   function setFlip (recipient) {
     _flip = flip(recipient)
   }
