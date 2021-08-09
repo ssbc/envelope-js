@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const na = require('sodium-native')
 const hkdf = require('futoin-hkdf')
 const labels = require('envelope-spec/cloaked_msg_id/constants.json')
@@ -16,7 +17,7 @@ module.exports = class CloakedMsgId {
       return
     }
 
-    var info = [
+    const info = [
       Buffer.from(labels.cloaked_msg_id, 'utf8'),
       public_msg_id
     ]

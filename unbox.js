@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const { Buffer } = require('buffer')
 const na = require('sodium-native')
 const LABELS = require('envelope-spec/derive_secret/constants.json')
@@ -22,7 +23,7 @@ function unbox (ciphertext, feed_id, prev_msg_id, trial_keys, opts = {}) {
 
 function unboxKey (ciphertext, feed_id, prev_msg_id, trial_keys, opts = {}) {
   if (trial_keys.length === 0) return null
-  
+
   const {
     maxAttempts = 8,
     derive = DeriveSecret(feed_id, prev_msg_id)
@@ -46,11 +47,13 @@ function unboxKey (ciphertext, feed_id, prev_msg_id, trial_keys, opts = {}) {
     for (let j = 0; j < _maxAttempts; j++) {
       unslot(
         msg_key,
-        ciphertext.slice(32 + j*32, 32 + j*32 + 32) // key_slot
+        ciphertext.slice(32 + j * 32, 32 + j * 32 + 32) // key_slot
       )
 
+      // read_key
+      //   └──> header_key
       const read_key = derive(msg_key, [LABELS.read_key])
-        const header_key = derive(read_key, [LABELS.header_key])
+      const header_key = derive(read_key, [LABELS.header_key])
 
       if (na.crypto_secretbox_open_easy(header, header_box, zerodNonce, header_key)) {
         return read_key
