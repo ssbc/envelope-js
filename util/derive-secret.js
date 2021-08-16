@@ -8,13 +8,13 @@ const hash_len = hkdf.hash_length(hash)
 const key_length = 32
 
 module.exports = function DeriveSecret (feed_id, prev_msg_id) {
-  prev_msg_id = convertBFENilMsg(prev_msg_id, feed_id)
+  const prevMsgId = convertBFENilMsg(prev_msg_id, feed_id)
 
   return function derive (pk, labels, length = key_length) {
     const info = [
       toBuffer('envelope'),
       feed_id,
-      prev_msg_id,
+      prevMsgId,
       ...(labels.map(toBuffer))
     ]
 
