@@ -1,12 +1,5 @@
-const { bfeNamedTypes } = require('ssb-bfe')
+const { toTF } = require('ssb-bfe')
 const error = require('./error')
-
-const toTF = (typeName, formatName) => {
-  return Buffer.from([
-    bfeNamedTypes[typeName].code,
-    bfeNamedTypes[typeName].formats[formatName].code
-  ])
-}
 
 const NIL_TFD = toTF('generic', 'nil')
 
