@@ -1,4 +1,4 @@
-const na = require('sodium-native')
+const na = require('sodium-universal')
 const { bfeTypes } = require('ssb-bfe')
 
 module.exports = class Cipherlink {

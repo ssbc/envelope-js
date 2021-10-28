@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 const { Buffer } = require('buffer')
-const na = require('sodium-native')
+const na = require('sodium-universal')
 const LABELS = require('envelope-spec/derive_secret/constants.json')
 
 const { DeriveSecret, KeySlot, error } = require('./util')

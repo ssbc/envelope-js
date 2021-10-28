@@ -1,4 +1,4 @@
-const na = require('sodium-native')
+const na = require('sodium-universal')
 
 const decodeLeaves = require('./decode-leaves')
 const encodeLeaves = require('./encode-leaves')

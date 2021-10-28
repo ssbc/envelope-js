@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-const na = require('sodium-native')
+const na = require('sodium-universal')
 const hkdf = require('futoin-hkdf')
 const labels = require('envelope-spec/cloaked_msg_id/constants.json')
 
