@@ -4,12 +4,12 @@ const error = require('./error')
 const NIL_TFD = toTF('generic', 'nil')
 
 const CLASSIC_FEED_TF = toTF('feed', 'classic')
-const GABBYGR_FEED_TF = toTF('feed', 'gabby-grove')
-const BENDYBT_FEED_TF = toTF('feed', 'bendy-butt')
+const GABBYGR_FEED_TF = toTF('feed', 'gabbygrove-v1')
+const BENDYBT_FEED_TF = toTF('feed', 'bendybutt-v1')
 
-const CLASSIC_MSG_TF = toTF('msg', 'classic')
-const GABBYGR_MSG_TF = toTF('msg', 'gabby-grove')
-const BENDYBT_MSG_TF = toTF('msg', 'bendy-butt')
+const CLASSIC_MSG_TF = toTF('message', 'classic')
+const GABBYGR_MSG_TF = toTF('message', 'gabbygrove-v1')
+const BENDYBT_MSG_TF = toTF('message', 'bendybutt-v1')
 
 const ZEROS = Buffer.alloc(32)
 

@@ -3,7 +3,7 @@ const bfe = require('ssb-bfe')
 const convertNilForEnvelopeSpec = require('../util/bfe-nil-msg')
 
 tape('nil envelope', function (t) {
-  const bbFeed = '@6CAxOI3f+LUOVrbAl0IemqiS7ATpQvr9Mdw9LC4+Uv0=.bbfeed-v1'
+  const bbFeed = 'ssb:feed/bendybutt-v1/6CAxOI3f+LUOVrbAl0IemqiS7ATpQvr9Mdw9LC4+Uv0='
   const bbNull = convertNilForEnvelopeSpec(bfe.encode(null), bfe.encode(bbFeed))
   t.equal(bbNull.slice(0,2).toString('hex'), '0104', 'bendy msg')
   t.ok(bbNull.slice(2).equals(Buffer.alloc(32)), 'ends with 32 zeros')
