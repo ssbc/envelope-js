@@ -1,13 +1,15 @@
 module.exports = function slpEncode (arr) {
-  let output = Buffer.alloc(0)
+  const length = arr.map(x => 2 + x.length).reduce((sum, x) => sum + x, 0)
+  const output = Buffer.alloc(length)
+  let index = 0
 
   arr.forEach(el => {
     if (!Buffer.isBuffer(el)) throw new Error(`slp.encode expects Buffers, got ${el}`)
 
-    const length = Buffer.alloc(2)
-    length.writeInt16LE(el.length)
-
-    output = Buffer.concat([output, length, el])
+    const len = el.length
+    output.writeInt16LE(len, index)
+    el.copy(output, index + 2)
+    index += 2 + len
   })
 
   return output

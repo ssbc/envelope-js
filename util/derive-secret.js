@@ -6,13 +6,14 @@ const convertBFENilMsg = require('./bfe-nil-msg')
 const hash = 'sha256'
 const hash_len = hkdf.hash_length(hash)
 const key_length = 32
+const bufEnvelope = toBuffer('envelope')
 
 module.exports = function DeriveSecret (feed_id, prev_msg_id) {
   const prevMsgId = convertBFENilMsg(prev_msg_id, feed_id)
 
   return function derive (pk, labels, length = key_length) {
     const info = [
-      toBuffer('envelope'),
+      bufEnvelope,
       feed_id,
       prevMsgId,
       ...(labels.map(toBuffer))
